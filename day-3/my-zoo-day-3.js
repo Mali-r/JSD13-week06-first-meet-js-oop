@@ -159,6 +159,18 @@ function displayZoo() {
   console.log(pathwayRow.join(" — "));
 }
 
+// fetch - random fun fact from api https://uselessfacts.jsph.pl/random.json?language=en 
+async function fetchfunfact(){
+  try{
+    const response = await fetch("https://uselessfacts.jsph.pl/random.json?language=en")
+    const data = await response.json();
+    return data.text;
+  } catch (error) {
+    console.error("Can't reach the data: ",error);
+    return "Unable load a Funfact."
+  }
+}
+
 function inspectLocation() {
   const location = zooPath[visitor.position];
 
