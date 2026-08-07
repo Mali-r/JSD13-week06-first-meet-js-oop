@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "scripts": {
+    "day1": "node day-1/my-zoo.js",
+    "day2": "node day-2/my-zoo-day-2.js",
+    "day3": "node day-3/first-meet-fetch.js",
+    "day3-fetch": "node day-3/my-zoo-day-3.js"
+  }
+}
