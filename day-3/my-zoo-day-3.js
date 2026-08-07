@@ -127,8 +127,8 @@ const zooPath = [
   },
 ];
 
-const zooName = "JS Terminal Zoo";
-const visitor = new Visitor("Neeti");
+const zooName = "JSD13 Terminal Zoo";
+const visitor = new Visitor("Mali");
 
 const rl = createInterface({
   input: process.stdin,
@@ -159,7 +159,7 @@ function displayZoo() {
   console.log(pathwayRow.join(" — "));
 }
 
-// fetch - random fun fact from api https://uselessfacts.jsph.pl/random.json?language=en 
+// 1st : fetch - random fun fact from api https://uselessfacts.jsph.pl/random.json?language=en 
 async function fetchfunfact(){
   try{
     const response = await fetch("https://uselessfacts.jsph.pl/random.json?language=en")
@@ -171,26 +171,35 @@ async function fetchfunfact(){
   }
 }
 
-function inspectLocation() {
+// 2nd : fetch - start function with async then add fetchfunfact() in inspectLocation for animal
+async function inspectLocation() {
   const location = zooPath[visitor.position];
 
   console.log(`\nYou are at: ${location.name}`);
+  console.log("Loading a FunFact ...");
+  const funfact = await fetchfunfact();
+  console.log(`💡FunFact here is: ${funfact}`);
 
   if (location.animal) {
     console.log(location.animal.describe());
     console.log(location.animal.makeSound());
+    // console.log("Loading a FunFact ...");
+    // const funfact = await fetchfunfact();
+    // console.log(`💡FunFact here is: ${funfact}`);
   } else {
     console.log(location.description);
   }
 }
 
-function handleCommand(command) {
+// 3rd : fetch - start function with async to every functions that relate to function which fetch added. 
+// And start that function with await to wait the data
+async function handleCommand(command) {
   if (command === "l") {
     console.log(visitor.moveLeft());
   } else if (command === "r") {
     console.log(visitor.moveRight(zooPath.length - 1));
   } else if (command === "i") {
-    inspectLocation();
+    await inspectLocation();
   } else if (command === "d") {
     showZooDirectory();
   } else {
@@ -208,10 +217,12 @@ function prepareAnimalFood() {
   console.log("Visitors can continue exploring.");
 }
 
+// 3rd : fetch - start function with async to every functions that relate to function which fetch added. 
+// And start that function with await to wait the data
 function askForCommand() {
   rl.question(
     "\n[l] Left | [r] Right | [i] Inspect | [d] Directory | [q] Quit\n> ",
-    (answer) => {
+    async (answer) => {  // <-- add async front of callback
       const command = answer.trim().toLowerCase();
 
       if (command === "q") {
@@ -220,7 +231,7 @@ function askForCommand() {
         return;
       }
 
-      handleCommand(command);
+    await handleCommand(command); // <-- add await
       displayZoo();
       askForCommand();
     },
@@ -233,3 +244,4 @@ displayZoo();
 inspectLocation();
 prepareAnimalFood();
 askForCommand();
+
